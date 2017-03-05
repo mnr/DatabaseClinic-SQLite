@@ -2,9 +2,11 @@
 
 """
 For each record in the database,
-search for character names,
-convert them to UPPERCASE,
-then UPDATE the record in the database
+DELETE any lines that
+start with "ENTER"
+or "EXIT"
+or "ACT"
+or "SCENE"
 """
 
 import sqlite3 # provides python with a library for sqlite
@@ -16,20 +18,19 @@ myCursor = conn.cursor() # provides a connection to the database
 myCursor.execute('SELECT max(line_number) FROM midsummer')
 
 linesInPlay = myCursor.fetchall()[0][0]
-linesProcessed = 0
 
 start_stopwatch = time.time() #start a timer
 
-with open('characters.txt') as play_characters:
-    for acharacter in play_characters.read().splitlines():
-        sqlToDo = "UPDATE midsummer SET play_text = REPLACE(play_text, "
-        sqlToDo += '"' + acharacter.capitalize() + '", '
-        sqlToDo += '"' + acharacter.upper() + '") '
-        sqlToDo += "WHERE instr(play_text,"
-        sqlToDo += '"' + acharacter.capitalize() + '")'
-        myCursor.execute(sqlToDo)
-        # print acharacter
-        linesProcessed += linesInPlay
+sqlToDo = "DELETE FROM midsummer "
+sqlToDo += "   WHERE ( "
+sqlToDo += '      play_text LIKE "ENTER%" '
+sqlToDo += '   OR play_text  LIKE "EXIT%" '
+sqlToDo += '   OR play_text  LIKE "ACT%" '
+sqlToDo += '   OR play_text  LIKE "SCENE%" '
+sqlToDo += '   )'
+sqlToDo += ';'
+
+myCursor.execute(sqlToDo)
 
 conn.commit()
 
@@ -40,9 +41,9 @@ end_stopwatch = time.time()
 
 stopwatch = end_stopwatch - start_stopwatch
 
-lines_duration = stopwatch/linesProcessed
+lines_duration = stopwatch/linesInPlay
 
-SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("UPDATE",{0})'.format(lines_duration)
+SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("DELETE",{0})'.format(lines_duration)
 
 myCursor.execute(SQLToDo)
 
