@@ -4,7 +4,7 @@ Database Clinic is a series of courses from LinkedIn Learning that demonstrate t
 
 In addition to standard databases such as MySQL or MS-Access, Database Clinic also explores the use of tools not traditionally thought of as databases.
 
-This specific example of Database Clinic uses (SQLite)[http://sqlite.org/] to solve the problems. SQLite 
+This specific example of Database Clinic uses [SQLite](http://sqlite.org/) to solve the problems. SQLite 
 
 examples and solutions from Database Clinic for LinkedIn Learning
 
