@@ -45,10 +45,11 @@ sapply(importTheseSheets,putTheseSheetsInSQLite)
 # Calculate the average accident severity for every type of motorcycle
 #
 do_this_sqlite <- "
-  SELECT avg(Accident_Severity) as Severity,Label
-  FROM Accidents_2015
-  LEFT JOIN Vehicles_2015 ON Accidents_2015.Accident_Index = Vehicles_2015.Accident_Index
-  LEFT JOIN vehicle_type ON Vehicle_Type LIKE vehicle_type.Code
-  WHERE Label LIKE '%otorcycle%'
-  GROUP BY Label
-  ORDER BY Severity"
+SELECT avg(Accident_Severity) as Severity,label
+FROM RoadSafetyData_Accidents_2015
+LEFT JOIN RoadSafetyData_Vehicles_2015 ON RoadSafetyData_Accidents_2015.Accident_Index = RoadSafetyData_Vehicles_2015.Accident_Index
+LEFT JOIN `Vehicle Type` ON cast(Vehicle_Type as REAL) LIKE `Vehicle Type`.code
+WHERE Label LIKE '%otorcycle%'
+GROUP BY label
+ORDER BY Severity"
+dbGetQuery(mySQLiteDB,do_this_sqlite)
