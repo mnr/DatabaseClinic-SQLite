@@ -5,15 +5,19 @@
 # Description: lynda.com, Database Clinic, SQLite, Problem 2
 
 # import necessary libraries
-list.of.packages <- c("RSQLite","readxl")
+list.of.packages <- c("readxl")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 
 #SQLite support
-library(RSQLite)
+library(DBI)
 
-putSQLiteHere <- "myRsqlite.sqlite"
+putSQLiteHere <- "myRsqlite.sqlite" # could also be ":memory:"
 mySQLiteDB <- dbConnect(RSQLite::SQLite(),putSQLiteHere)
+
+
+# ZIP import --------------------------------------------------------------
+
 
 # this is a function to import zip files, unpack them, then load them into an sqlite db
 importDataset <- function(getThisDataSet) {
@@ -27,6 +31,9 @@ importDataset <- function(getThisDataSet) {
 
 filestoget <- c("RoadSafetyData_Accidents_2015","RoadSafetyData_Vehicles_2015")
 sapply(filestoget,importDataset)
+
+# Excel import ------------------------------------------------------------
+
 
 # import the sheets from the excel file
 library(readxl)
@@ -42,6 +49,9 @@ putTheseSheetsInSQLite <- function(sheetWeNeed) {
 importTheseSheets <- c("Accident Severity","Vehicle Type")
 sapply(importTheseSheets,putTheseSheetsInSQLite)
 
+# Calculate ---------------------------------------------------------------
+
+
 # Calculate the average accident severity for every type of motorcycle
 #
 do_this_sqlite <- "
@@ -52,4 +62,7 @@ LEFT JOIN `Vehicle Type` ON cast(Vehicle_Type as REAL) LIKE `Vehicle Type`.code
 WHERE Label LIKE '%otorcycle%'
 GROUP BY label
 ORDER BY Severity"
+
 dbGetQuery(mySQLiteDB,do_this_sqlite)
+
+dbDisconnect(mySQLiteDB)
