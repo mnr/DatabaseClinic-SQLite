@@ -29,3 +29,17 @@ To solve this problem, I wrote four python scripts:
 4. Calculate the average
 
 These scripts demonstrate how to use SQLite with a programming language and they also keep the four steps in neat packages.
+
+# My Solution
+## 1_import_accidents.py
+This python program imports the accident data. It's written without error trapping with the intent of focus on the solution. Your version should include error trapping so it is more resilient. 
+
+My code uses sqlite3, a python library with support for sqlite. 
+
+This is a somewhat graceless solution. I've done this to clearly illustrate certain points. There are better ways to do this and I'll show them in the next python program.
+
+## 2_import_vehicles.py
+## 3_import_excel_tables.py
+## 4_calculate_average.py
+## dbjoins.R
+A solution written using the R programming language. Includes all steps as outlined above.
