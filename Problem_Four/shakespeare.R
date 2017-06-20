@@ -135,7 +135,6 @@ toc(log=TRUE) # Stop the clock
 
 for(aTic in tic.log(format=FALSE)) {
   mseconds <- (aTic[[2]]-aTic[[1]])/lines.in.midsummer
-  #mseconds <- 0
   print(paste(aTic[3],mseconds))
 }
 
