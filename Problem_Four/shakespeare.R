@@ -4,6 +4,18 @@
 # Author: Mark Niemann-Ross. mark.niemannross@gmail.com
 # Description: lynda.com, Database Clinic, Shakespeare, Problem 4
 
+# SETUP -------------------------------------------------------------------
+
+# import necessary libraries
+list.of.packages <- c("tictoc")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+
+# tictoc provides matlab-like timers
+library(tictoc)
+tic.clearlog()
+
 # uses the RSQLite package for SQLite support
 library(DBI)
 
@@ -35,7 +47,7 @@ shakes.connection <- file(Shakes.text, open = "r")
 
 
 # Start the clock for CREATE
-ptm <- proc.time()['sys.self']
+tic("Create")
 
 while (length(oneLine <-
               readLines(shakes.connection, n = 1, warn = FALSE)) > 0) {
@@ -48,20 +60,16 @@ while (length(oneLine <-
     # add the phrase itself,
     # trimmed of any leading or following spaces
     
-    sqlToDo = paste0(
-      'INSERT INTO midsummer (cast_name,play_text) VALUES (',
-      '"', character.speaking,'"',
-      ',',
-      '"', oneLine,'"',
-      ')'
-    )
-    dbResult <- dbSendStatement(mySQLiteDB, sqlToDo)
+    sqlToDo <- "INSERT INTO midsummer (cast_name,play_text) VALUES (:x, :y)"
+    sqlParms <- list(x=character.speaking,y=oneLine)
+    
+    dbResult <- dbSendStatement(mySQLiteDB, sqlToDo,params = sqlParms)
     dbClearResult(dbResult)
     
   }
 }
-# Stop the clock
-timer.results["Create"] <- proc.time()['sys.self'] - ptm
+
+toc(log=TRUE) # Stop the clock
 
 close(shakes.connection) # close the Shakespeare text file
 
@@ -74,27 +82,20 @@ lines.in.midsummer <- dbGetQuery(mySQLiteDB,sqlToDo)[1,1]
 ### For each record in the database, search for character names, convert them to
 #   UPPERCASE, then UPDATE the record in the database
 
-# Start the clock for UPDATE
-ptm <- proc.time()['sys.self']
+tic("Update")
 
 for (acharacter in list.of.characters) {
   # titled produces a first letter cap. R doesn't have toTitle()
   titled.acharacter <- paste0(substring(acharacter,1,1),tolower(substring(acharacter,2)))
-  sqlToDo <- paste0(
-    "UPDATE midsummer ",
-    "SET play_text = ",
-    "REPLACE(play_text, ",
-         '"',titled.acharacter,'",',
-         '"',toupper(acharacter),'"',
-         ") ",
-    "WHERE instr(play_text,",'"',titled.acharacter,'"',")"
-  )
-  dbResult <- dbSendStatement(mySQLiteDB, sqlToDo)
+  
+  sqlToDo <- "UPDATE midsummer SET play_text = REPLACE(play_text,:x,:y) WHERE instr(play_text,:z)"
+  sqlParms <- list(x=titled.acharacter,y=toupper(acharacter),z=titled.acharacter)
+  
+  dbResult <- dbSendStatement(mySQLiteDB, sqlToDo,params = sqlParms)
   dbClearResult(dbResult)
 }
-# Stop the clock
-timer.results["Update"] <- proc.time()['sys.self'] - ptm
 
+toc(log=TRUE) # Stop the clock
 
 # DELETE ------------------------------------------------------------------
 
@@ -102,15 +103,14 @@ timer.results["Update"] <- proc.time()['sys.self'] - ptm
 ### For each record in the database, DELETE any lines that start with “ENTER” or
 #   “EXIT” or “ACT” or “SCENE”
 
-# Start the clock for DELETE
-ptm <- proc.time()['sys.self']
+tic("Delete")
 
 sqlToDo <- 'DELETE FROM midsummer WHERE (play_text LIKE "ENTER%" OR play_text LIKE "EXIT%" OR play_text  LIKE "ACT%" OR play_text  LIKE "SCENE%" );'
 dbResult <- dbSendStatement(mySQLiteDB, sqlToDo)
 dbClearResult(dbResult)
 
-# Stop the clock
-timer.results["Delete"] <- proc.time()['sys.self'] - ptm
+toc(log=TRUE) # Stop the clock
+
 
 
 # READ --------------------------------------------------------------------
@@ -119,10 +119,25 @@ timer.results["Delete"] <- proc.time()['sys.self'] - ptm
 ### When all other tasks are complete, READ each line and print it out to
 #   console. This task is not concurrent.
 
+options(max.print = lines.in.midsummer + 10)
+
+tic("Read")
+
+dbGetQuery(mySQLiteDB,"SELECT play_text from midsummer")
+
+toc(log=TRUE) # Stop the clock
+
+
 # PERFORMANCE STATISTICS --------------------------------------------------
 
 
 # During execution, store performance data and then create the following table:
+
+for(aTic in tic.log(format=FALSE)) {
+  mseconds <- (aTic[[2]]-aTic[[1]])/lines.in.midsummer
+  #mseconds <- 0
+  print(paste(aTic[3],mseconds))
+}
 
 dbDisconnect(mySQLiteDB) # close the database
 
