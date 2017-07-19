@@ -1,4 +1,6 @@
-# Problem 5 : Database Performance
+# Database Performance
+
+## This example was in the original problem set, but was dropped from the final course.
 
 This challenge is about database performance. We're asked to repeatedly:
 1. add a large image file to the database
