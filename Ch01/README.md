@@ -6,5 +6,5 @@ We're to import the [California Population Projection by County, Age, and Ethnic
 
 This may seem like a simple task, but it demonstrates a valuable lesson. The dataset is almost 250 Megabytes in size, and the format of the data in the downloaded file may not match up with the way their particular database management system stores that data.
 
-# MNR Notes
+## MNR Notes
 I've solved this problem by hand using database tools. I'll demonstrate three tools: [SQLite Manager for Firefox](https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/), [DB Browser for SQLite](http://sqlitebrowser.org/) and the [SQLite3 - the command line tool](https://sqlite.org/cli.html).
