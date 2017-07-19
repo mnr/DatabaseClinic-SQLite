@@ -1,6 +1,17 @@
-# Problem 3 : Search a Database
+# Search a Database
 
-The problem we've been given is to search [California Population Projections](https://data.ca.gov/dataset/california-population-projection-county-age-gender-and-ethnicity/resource/cd0453ba-a6db-4542#{}) and create a report showing the male and female population for each California county in the year 2014.
+In this challenge, the instructor will demonstrate how to efficiently search a dataset using their database of choice.
+
+We've been given the [California Population Projections](https://data.ca.gov/dataset/california-population-projection-county-age-gender-and-ethnicity/resource/cd0453ba-a6db-4542#{})
+
+This is a large dataset, and searching for information will require a lot of work from the computer.
+
+We're asked to do two things:
+1. Create a list of male and female populations for each county in California in 2014
+2. Return that information in a specifically-formatted table.
+
+
+  and create a report showing the male and female population for each California county in the year 2014.
 
 Be aware that the FORMAT of the report IS IMPORTANT. Your results should have these columns and rows. The solution should look something like this:
 
@@ -10,7 +21,10 @@ Be aware that the FORMAT of the report IS IMPORTANT. Your results should have th
 | Amador | sum of male population | sum of female population |
 | etc... |  sum of male population | sum of female population |
 
-This is actually more difficult than it seems at first. The SQL to get the numbers is fairly easy. Here's the sql to do that...
+
+## MNR Notes
+
+This is actually more difficult than it seems at first. The SQL to get the numbers is fairly easy. Here's the code to do that...
 
 ```
 select
