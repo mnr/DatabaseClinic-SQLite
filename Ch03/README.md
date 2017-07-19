@@ -32,7 +32,6 @@ To solve this problem, I wrote four python scripts:
 
 These scripts demonstrate how to use SQLite with a programming language and they also keep the four steps in neat packages.
 
-## MNR Solution
 ### 1_import_accidents.py
 This python program imports the accident data. It's written without error trapping with the intent of focus on the solution. Your version should include error trapping so it is more resilient.
 
