@@ -1,4 +1,4 @@
-# Problem 1 : Create a database
+# Create a database
 
 In this chapter, we’re asked to demonstrate the simplest of tasks - create a database and import a dataset. This basic operation will provide an introduction to this data tool.
 
