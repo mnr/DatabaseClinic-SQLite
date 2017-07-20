@@ -9,11 +9,14 @@ list.of.packages <- c("readxl")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 
-#SQLite support
+# SQLite support
 library(DBI)
 
 putSQLiteHere <- "myRsqlite.sqlite" # could also be ":memory:"
 mySQLiteDB <- dbConnect(RSQLite::SQLite(),putSQLiteHere)
+
+# add support for median
+RSQLite::initExtension(mySQLiteDB)
 
 
 # ZIP import --------------------------------------------------------------
@@ -55,7 +58,7 @@ sapply(importTheseSheets,putTheseSheetsInSQLite)
 # Calculate the average accident severity for every type of motorcycle
 #
 do_this_sqlite <- "
-SELECT avg(Accident_Severity) as Severity,label
+SELECT median(Accident_Severity), avg(Accident_Severity) as Severity,label
 FROM RoadSafetyData_Accidents_2015
 LEFT JOIN RoadSafetyData_Vehicles_2015 ON RoadSafetyData_Accidents_2015.Accident_Index = RoadSafetyData_Vehicles_2015.Accident_Index
 LEFT JOIN `Vehicle Type` ON cast(Vehicle_Type as REAL) LIKE `Vehicle Type`.code
