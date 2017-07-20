@@ -4,6 +4,13 @@ In this chapter of Database Clinic, we're asked to start with two datasets, then
 
 We’ll be working with road safety data published by the [UK government at their open data website.](https://data.gov.uk/dataset/road-accidents-safety-data)
 
+To get this data, download two files:
+[2015 Road Safety - all 2015 data](http://data.dft.gov.uk/road-accidents-safety-data/RoadSafetyData_2015.zip)
+... and ...
+[Lookup up tables for variables (which unpacks into road-accidents-safety-data)](http://data.dft.gov.uk/road-accidents-safety-data/Road-Accident-Safety-Data-Guide.xls)
+
+Unzip these files, then place them into the folder that contains this code.
+
 This data contains several fields:
 ### Accidents_2015.csv
 1. Accident_Severity
@@ -17,8 +24,7 @@ There is a third file, which contains definitions of the various data types. Mos
 ### Road-Accident-Safety-Data-Guide.xls
 * Table titled Vehicle Type
 
-We’re asked to determine the median accident severity for each type of motorcycle.
-This will show if there is any relationship between the type of motorcycle and the types of accidents they are involved in.
+We’re asked to determine the median accident severity for each type of motorcycle. This will show if there is any relationship between the type of motorcycle and the types of accidents they are involved in.
 
 We know that Accident_Index is a common link between the databases and we can use that link to create a relationship between the datasets.
 
@@ -40,9 +46,14 @@ My code uses sqlite3, a python library with support for sqlite.
 This is a somewhat graceless solution. I've done this to clearly illustrate certain points. There are better ways to do this and I'll show them in the next python program.
 
 ### 2_import_vehicles.py
+This python script imports the vehicle data in Vehicles_2015.csv. It is a bit more graceful when importing the data because it doesn't require naming every column.
+
 ### 3_import_excel_tables.py
-### 4_calculate_average.py
+Loads in two tabs from the excel file: accident_severity and vehicle_type. This requires installing xlrd. I've often experienced "ImportError: No module named xlrd" even after doing "sudo pip install xlrd". I've resorted to adding the xlrd.egg to PYTHONPATH by doing the following in a terminal: "export PYTHONPATH=$PYTHONPATH: where-ever-pip-installed-the-xlrd.egg"
+
+### 4_calculate_median.py
+SQLite doesn't have a function to produce median, so I've used python's conn.create_function to add it. For extra credit, it also calculates the average severity.
 
 ## I've also produced a solution written in R
 ### dbjoins.R
-A solution written using the R programming language. Includes all steps as outlined above.
+A solution written using the R programming language. Includes all steps as outlined above. RSQLite uses "RSQLite::initExtension(db)" to add a package of statistic functions.
