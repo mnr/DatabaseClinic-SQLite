@@ -19,12 +19,7 @@ We will have to link those datasets and create a table that forecasts the demand
 ## MNR Notes
 I make a choice to use actual data for years < 2015 and forecast for years 2015->2060.
 
-Here's the SQL for the data < 2015:
-
-    CREATE TABLE demandFor2015Minus AS
-    SELECT substr(Year,7,4) AS Year, EducationalAttainment, PopulationCount AS Demand
-    FROM 'CA_Educational_Attainment___Personal_Income_2008-2014'
-    GROUP BY Year,EducationalAttainment
+The SQL for data < 2015 is in [create_demandFor2015Minus.sql](create_demandFor2015Minus.sql)
 
 To generate the forecast for 2015->2060, I use the following process...
 
@@ -38,13 +33,17 @@ Return the division of that population into the five different educational attai
 This requires the calculation of coefficients for each age/gender/attainment combination. Here's the SQLite to generate that table:
 
     CREATE TABLE demographicSplit AS
-    SELECT Age, Gender, EducationalAttainment,
-    sum(PopulationCount) /
-      (SELECT sum(PopulationCount)
-	     FROM 'CA_Educational_Attainment___Personal_Income_2008-2014'
-	     GROUP BY Age, Gender) AS coefficient
-    FROM 'CA_Educational_Attainment___Personal_Income_2008-2014'
-    GROUP BY Age,Gender,EducationalAttainment
+    SELECT CAEA.Age AS Age, CAEA.Gender AS Gender, EducationalAttainment,  
+      	sum(PopulationCount) / lookup.TotalPopCount AS coefficient
+    FROM 'CA_Educational_Attainment___Personal_Income_2008-2014' CAEA
+    JOIN
+      (SELECT Age, Gender, CAST(sum(PopulationCount) as REAL) AS TotalPopCount
+      FROM 'CA_Educational_Attainment___Personal_Income_2008-2014'
+      GROUP BY Age, Gender) AS lookup
+    ON
+      CAEA.Age = lookup.Age
+	    AND CAEA.Gender = lookup.Gender
+    GROUP BY CAEA.Age,CAEA.Gender,EducationalAttainment
 
 Then for each year/age/gender in DRU, divide the population of that demographic into five lines predicting the educational attainment for each demographic slice.
 
