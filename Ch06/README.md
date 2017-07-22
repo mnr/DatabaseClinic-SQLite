@@ -30,31 +30,9 @@ Given:
 
 Return the division of that population into the five different educational attainments.
 
-This requires the calculation of coefficients for each age/gender/attainment combination. Here's the SQLite to generate that table:
+This requires the calculation of coefficients for each age/gender/attainment combination. Here's the [SQLite to generate that table](create_demographicSplit.sql)
 
-    CREATE TABLE demographicSplit AS
-    SELECT CAEA.Age AS Age, CAEA.Gender AS Gender, EducationalAttainment,  
-      	sum(PopulationCount) / lookup.TotalPopCount AS coefficient
-    FROM 'CA_Educational_Attainment___Personal_Income_2008-2014' CAEA
-    JOIN
-      (SELECT Age, Gender, CAST(sum(PopulationCount) as REAL) AS TotalPopCount
-      FROM 'CA_Educational_Attainment___Personal_Income_2008-2014'
-      GROUP BY Age, Gender) AS lookup
-    ON
-      CAEA.Age = lookup.Age
-	    AND CAEA.Gender = lookup.Gender
-    GROUP BY CAEA.Age,CAEA.Gender,EducationalAttainment
 
-Then for each year/age/gender in DRU, divide the population of that demographic into five lines predicting the educational attainment for each demographic slice.
+Then for each year/age/gender in DRU, divide the population of that demographic into five lines predicting the educational attainment for each demographic slice. [Here's the sql for that table](create_demandFor2015Plus).
 
-    CREATE TABLE demandFor2015Plus AS
-    SELECT Year, EducationalAttainment, CAST(sum(coefficient * Population) AS INTEGER) AS Demand
-    FROM 'CA_DRU_proj_2010-2060' DRU
-    JOIN demographicSplit ON DRU.Gender = demographicSplit.Gender
-       AND demographicSplit.Age = CASE
-		    WHEN CAST (DRU.Age as INTEGER) < 18 THEN '00 to 17'
-			  WHEN CAST (DRU.Age as INTEGER) < 65 THEN '18 to 64'
-			  ELSE '65 to 80+'
-	  END
-    WHERE CAST(Year AS INTEGER) > 2014
-    GROUP BY Year, EducationalAttainment
+It's possible to combine both factual data and forecast in one [SQL program](entireDemandReport.sql).
