@@ -1,4 +1,4 @@
- CREATE TABLE demandFor2015Plus AS
+CREATE TABLE demandFor2015Plus AS
 SELECT Year, EducationalAttainment, CAST(sum(coefficient * Population) AS INTEGER) AS Demand
 FROM 'CA_DRU_proj_2010-2060' DRU
 JOIN demographicSplit ON DRU.Gender = demographicSplit.Gender
