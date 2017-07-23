@@ -7,5 +7,4 @@ JOIN demographicSplit ON DRU.Gender = demographicSplit.Gender
 			  WHEN CAST (DRU.Age as INTEGER) < 65 THEN '18 to 64'
 			  ELSE '65 to 80+'
 		END
-WHERE CAST(Year AS INTEGER)  > 2014
 GROUP BY Year, EducationalAttainment
