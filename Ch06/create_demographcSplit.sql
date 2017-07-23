@@ -1,5 +1,5 @@
 CREATE TABLE demographicSplit AS
-SELECT CAEA.Age, CAEA.Gender, EducationalAttainment,  
+SELECT CAEA.Age Age, CAEA.Gender Gender, EducationalAttainment,  
       	sum(PopulationCount) / lookup.TotalPopCount AS coefficient
 FROM 'CA_Educational_Attainment___Personal_Income_2008-2014' CAEA
 JOIN 
