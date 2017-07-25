@@ -20,17 +20,16 @@ linesProcessed = 0
 
 start_stopwatch = time.time() #start a timer
 
+# Note: SQLite3 recommends using ? instead of %s
+sqlToDo = "UPDATE midsummer SET play_text = REPLACE(play_text, ?, ?) WHERE instr(play_text, ?)"
+
 with open('characters.txt') as play_characters:
     for acharacter in play_characters.read().splitlines():
-        sqlToDo = "UPDATE midsummer SET play_text = REPLACE(play_text, "
-        sqlToDo += '"' + acharacter.capitalize() + '", '
-        sqlToDo += '"' + acharacter.upper() + '") '
-        sqlToDo += "WHERE instr(play_text,"
-        sqlToDo += '"' + acharacter.capitalize() + '")'
-        myCursor.execute(sqlToDo)
-        # print acharacter
+        argsToPass = acharacter.capitalize(), acharacter.upper(), acharacter.capitalize()
+        myCursor.execute(sqlToDo, argsToPass)
         linesProcessed += linesInPlay
 
+    
 conn.commit()
 
 ####
@@ -42,8 +41,8 @@ stopwatch = end_stopwatch - start_stopwatch
 
 lines_duration = stopwatch/linesProcessed
 
-SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("UPDATE",{0})'.format(lines_duration)
+SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("UPDATE",?)'
 
-myCursor.execute(SQLToDo)
+myCursor.execute(SQLToDo,(lines_duration,))
 
 conn.commit()
