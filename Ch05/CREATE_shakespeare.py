@@ -34,13 +34,17 @@ with open('characters.txt') as play_characters:
 
 currentCharacter = "NoNameCharacter"
 
+# Note: SQLite3 execute() prefers "?" over "%s"
+sqlToDo = "INSERT INTO midsummer (cast_name,play_text) VALUES (?,?)"
+
+
 with open("A_Midsummer_Nights_Dream.txt") as aLineInPlay:
     for line in aLineInPlay:
         if line.upper().strip() in listOfCharacters:
             currentCharacter = line.upper().strip()
         else:
-            sqlToDo = 'INSERT INTO midsummer (cast_name,play_text) VALUES ("{0}","{1}")'.format(currentCharacter,line)
-            myCursor.execute(sqlToDo)
+            argsToPass = currentCharacter,line
+            myCursor.execute(sqlToDo,argsToPass)
 
 conn.commit()
 
@@ -57,8 +61,8 @@ stopwatch = end_stopwatch - start_stopwatch
 
 lines_duration = stopwatch/linesInPlay
 
-SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("CREATE",{0})'.format(lines_duration)
+SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("CREATE",?)'
 
-myCursor.execute(SQLToDo)
+myCursor.execute(SQLToDo,(lines_duration,))
 
 conn.commit()
