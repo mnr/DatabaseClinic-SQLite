@@ -26,6 +26,7 @@ sqlToDo += "   WHERE ( "
 sqlToDo += '      play_text LIKE "ENTER%" '
 sqlToDo += '   OR play_text  LIKE "EXIT%" '
 sqlToDo += '   OR play_text  LIKE "ACT%" '
+sqlToDo += '   OR play_text  LIKE "EXEUNT%" '
 sqlToDo += '   OR play_text  LIKE "SCENE%" '
 sqlToDo += '   )'
 sqlToDo += ';'
@@ -43,8 +44,8 @@ stopwatch = end_stopwatch - start_stopwatch
 
 lines_duration = stopwatch/linesInPlay
 
-SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("DELETE",{0})'.format(lines_duration)
+SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("DELETE",?)'
 
-myCursor.execute(SQLToDo)
+myCursor.execute(SQLToDo,(lines_duration,))
 
 conn.commit()
