@@ -30,8 +30,9 @@ stopwatch = end_stopwatch - start_stopwatch
 
 lines_duration = stopwatch/linesInPlay
 
-SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("READ",{0})'.format(lines_duration)
+SQLToDo = 'INSERT INTO performanceStats(action,duration) VALUES ("READ",?)'
 
-myCursor.execute(SQLToDo)
+myCursor.execute(SQLToDo,(lines_duration,))
+
 
 conn.commit()
