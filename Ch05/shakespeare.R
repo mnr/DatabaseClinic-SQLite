@@ -105,7 +105,7 @@ toc(log=TRUE) # Stop the clock
 
 tic("Delete")
 
-sqlToDo <- 'DELETE FROM midsummer WHERE (play_text LIKE "ENTER%" OR play_text LIKE "EXIT%" OR play_text  LIKE "ACT%" OR play_text  LIKE "SCENE%" );'
+sqlToDo <- 'DELETE FROM midsummer WHERE (play_text LIKE "ENTER%" OR play_text LIKE "EXIT%" OR play_text  LIKE "ACT%" OR play_text  LIKE "EXEUNT%" OR play_text  LIKE "SCENE%" );'
 dbResult <- dbSendStatement(mySQLiteDB, sqlToDo)
 dbClearResult(dbResult)
 
