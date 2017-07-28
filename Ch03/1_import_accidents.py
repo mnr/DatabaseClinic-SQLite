@@ -54,8 +54,9 @@ CREATE TABLE `Accidents_2015` (
 	`LSOA_of_Accident_Location`
 );
  '''
-myCursor.execute(do_this_sqlite)
+myCursor.execute(do_this_sqlite) # creates an empty table
 
+# this next set of commands populates that table
 reader = csv.reader(open('Accidents_2015.csv', 'r'), delimiter=',')
 
 rowIDCount = 0 # used to strip out the first line of csv
