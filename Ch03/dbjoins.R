@@ -66,6 +66,8 @@ WHERE Label LIKE '%otorcycle%'
 GROUP BY label
 ORDER BY Severity"
 
-dbGetQuery(mySQLiteDB,do_this_sqlite)
+motorSevData <- dbGetQuery(mySQLiteDB,do_this_sqlite)
+
+motorSevData # prints the table
 
 dbDisconnect(mySQLiteDB)
