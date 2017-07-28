@@ -18,6 +18,7 @@ def calcMedian(theListofValues):
     return sum(sorted(theListofValues)[quotient - 1:quotient + 1]) / 2
 
 # then install the function in sqlite
+# create_function(name, # of parameters, func)
 conn.create_function("median",1,calcMedian)
 
 
@@ -31,6 +32,7 @@ GROUP BY Label
 ORDER BY Severity
 """
 
-print '{:<12} {}'.format("Med Severity","Avg Severity","Motorcycle")
+print '{:>40} {:>13} {:>13}'.format("Motorcycle","Med Severity","Avg Severity")
+print "=" * (40+13+13+3)
 for aRow in myCursor.execute(do_this_sqlite):
-    print '{:.11} {:.3} {}'.format(aRow[0],aRow[1],aRow[2])
+    print '{2:>40} {0:^13} {1:^13.2f}'.format(*aRow)
