@@ -1,8 +1,10 @@
 #!/bin/env python2.7
 
 # import the two lookup tables from the excel file
-# This requires xlrd. Install with sudo easy_install xlrd or sudo pip install xlrd
-# if you get "ImportError", try export PYTHONPATH=$PYTHONPATH:path to the egg
+# This requires xlrd.
+# 1) open terminal
+# 2) pip install xlrd
+# if you get "ImportError", pip install -U pip setuptools then repeat
 
 import sqlite3 # provides python with a library for sqlite
 import xlrd
