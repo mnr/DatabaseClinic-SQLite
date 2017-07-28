@@ -18,21 +18,21 @@ reader = csv.reader(open('Vehicles_2015.csv', 'r'), delimiter=',')
 headers = reader.next()
 
 # build the table from the csv headers
-do_this_sqlite = "CREATE TABLE `Vehicles_2015` ( "
+do_this_sqlite_1 = "CREATE TABLE `Vehicles_2015` ( "
 
 for headerName in headers:
-    do_this_sqlite += "'" + headerName + "',"
+    do_this_sqlite_1 += "'" + headerName + "',"
 
 # remove last comma
-do_this_sqlite = do_this_sqlite[:-1]
+do_this_sqlite_1 = do_this_sqlite_1[:-1]
 
-do_this_sqlite += ");"
-myCursor.execute(do_this_sqlite)
+do_this_sqlite_1 += ");"
+myCursor.execute(do_this_sqlite_1)
 
 # then insert all of the data from the csv
 # first, build an SQL command. ??? will be substituted for values by execute
 do_this_sqlite = "INSERT INTO `Vehicles_2015` VALUES ( "
-do_this_sqlite += "?," * len(headers)
+do_this_sqlite += "?," * len(headers) # are preferred to avoid sql injection
 do_this_sqlite = do_this_sqlite[:-1]
 do_this_sqlite += ")"
 
