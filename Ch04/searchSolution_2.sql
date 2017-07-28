@@ -13,13 +13,11 @@ from ( select
       county_name as Fem_Cty,
 			sum(population) as Fem_Pop
 			from populationProjection
-			where Year = "01/01/2014 12:00:00 AM"
-            and gender = 'Female'
+			where Year = 2014 and gender = 'Female'
             group by county_name
 			)
 inner join  populationProjection
 on Fem_Cty = populationProjection.county_name
-where Year = "01/01/2014 12:00:00 AM"
-and gender = 'Male'
+where Year = 2014 and gender = 'Male'
 group by county_name
 order by county_name
