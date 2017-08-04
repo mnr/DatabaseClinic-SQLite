@@ -5,19 +5,20 @@
 	for each county 
 	for the year 2014.
 */
+
 select
-   county_name as "Year.2014",
-   sum(populationProjection.population) as 'Male',
-   Fem_Pop as 'Female'
+   `County Name` as "Year: 2014",
+   sum(secondTable.population) as 'Male',
+   Female_Pop as 'Female'
 from ( select
-      county_name as Fem_Cty,
-			sum(population) as Fem_Pop
-			from populationProjection
+      `County Name` as Female_Cty,
+			sum(population) as Female_Pop
+			from secondTable
 			where Year = 2014 and gender = 'Female'
-            group by county_name
+            group by `County Name`
 			)
-inner join  populationProjection
-on Fem_Cty = populationProjection.county_name
-where Year = 2014 and gender = 'Male'
-group by county_name
-order by county_name
+inner join  secondTable
+      on Female_Cty = secondTable.`County Name`
+ where Year = 2014 and gender = 'Male'
+group by `County Name`
+order by `County Name`

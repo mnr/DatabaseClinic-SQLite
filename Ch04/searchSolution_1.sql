@@ -8,10 +8,10 @@
 
 
 select 
-   county_name, 
+   `County Name`, 
    gender, 
    sum(population)
-from populationProjection
-where Year = "01/01/2014 12:00:00 AM"
-group by county_name, gender
-order by county_name, gender
+from secondTable
+where Year = 2014
+group by  `County Name`, gender
+order by  `County Name`, gender
