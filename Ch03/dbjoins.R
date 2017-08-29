@@ -5,12 +5,13 @@
 # Description: lynda.com, Database Clinic, SQLite, Problem 2
 
 # import necessary libraries
-list.of.packages <- c("readxl")
+list.of.packages <- c("readxl","DBI","RSQLite")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 
 # SQLite support
 library(DBI)
+library(RSQLite)
 
 putSQLiteHere <- "myRsqlite.sqlite" # could also be ":memory:"
 mySQLiteDB <- dbConnect(RSQLite::SQLite(),putSQLiteHere)
