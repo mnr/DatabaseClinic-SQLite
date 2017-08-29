@@ -7,7 +7,7 @@
 # SETUP -------------------------------------------------------------------
 
 # import necessary libraries
-list.of.packages <- c("tictoc")
+list.of.packages <- c("tictoc","DBI","RSQLite")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 
@@ -18,6 +18,7 @@ tic.clearlog()
 
 # uses the RSQLite package for SQLite support
 library(DBI)
+library(RSQLite)
 
 putSQLiteHere <- "shakespeare.sqlite" # could also be ":memory:"
 mySQLiteDB <- dbConnect(RSQLite::SQLite(), dbname = putSQLiteHere)
