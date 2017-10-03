@@ -27,7 +27,7 @@ RSQLite::initExtension(mySQLiteDB)
 importDataset <- function(getThisDataSet) {
   completePathName <- paste0("http://data.dft.gov.uk/road-accidents-safety-data/",getThisDataSet,".zip")
   mytempfile <- tempfile()
-  download.file(completePathName,mytempfile)
+  download.file(completePathName,mytempfile, method="auto")
   mydatafromcsv <- read.csv(unzip(mytempfile))
   dbWriteTable(conn=mySQLiteDB,name = getThisDataSet,value=mydatafromcsv)
   file.remove(mytempfile)
