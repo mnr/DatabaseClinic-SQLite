@@ -1,11 +1,6 @@
-#!/bin/env python2.7
-
-# import the accident data
-# I've sacrificed error trapping for simplicity.
-# Be sure 'UK Road Safety/Accidents_2015.csv' is in the same folder as this code
-
 import sqlite3 # provides python with a library for sqlite
 import csv # used to import Cal Enviro Screen csv file
+import urllib.request
 
 SQLITE_FILE = "UKRoadData.sqlite"
 
@@ -57,6 +52,12 @@ CREATE TABLE `Accidents_2015` (
 myCursor.execute(do_this_sqlite) # creates an empty table
 
 # this next set of commands populates that table
+
+# import the accident data
+
+AccidentsLocation = "https://data.yorkopendata.org/dataset/c0eec478-ef19-4234-826f-8efb9563eda2/resource/aa8bcb3d-3945-4347-adc9-24d8e1d3e05c/download/accidents.csv"
+urllib.request.urlretrieve(AccidentsLocation, 'Accidents_2015.csv')
+
 reader = csv.reader(open('Accidents_2015.csv', 'r'), delimiter=',')
 
 rowIDCount = 0 # used to strip out the first line of csv
