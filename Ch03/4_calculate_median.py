@@ -1,5 +1,3 @@
-#!/bin/env python2.7
-
 # Calculate the median accident severity for every type of motorcycle
 
 import sqlite3 # provides python with a library for sqlite
@@ -25,14 +23,14 @@ conn.create_function("median",1,calcMedian)
 do_this_sqlite = """
 SELECT median(Accident_Severity),avg(Accident_Severity) as Severity,Label
 FROM Accidents_2015
-LEFT JOIN Vehicles_2015 ON Accidents_2015.Accident_Index = Vehicles_2015.Accident_Index
+LEFT JOIN Vehicles_2015 ON Accidents_2015.Accident_Index = Vehicles_2015.Acc_Index
 LEFT JOIN vehicle_type ON Vehicle_Type LIKE vehicle_type.Code
 WHERE Label LIKE "%otorcycle%"
 GROUP BY Label
 ORDER BY Severity
 """
 
-print '{:>40} {:>13} {:>13}'.format("Motorcycle","Med Severity","Avg Severity")
-print "=" * (40+13+13+3)
+print ("{:>40} {:>13} {:>13}".format("Motorcycle","Med Severity","Avg Severity"))
+print ("=" * (40+13+13+3))
 for aRow in myCursor.execute(do_this_sqlite):
-    print '{2:>40} {0:^13} {1:^13.2f}'.format(*aRow)
+    print ('{2:>40} {0:^13} {1:^13.2f}'.format(*aRow))
