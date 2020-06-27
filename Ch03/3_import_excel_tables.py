@@ -1,4 +1,3 @@
-#!/bin/env python2.7
 
 # import the two lookup tables from the excel file
 # This requires xlrd.
@@ -8,6 +7,8 @@
 
 import sqlite3 # provides python with a library for sqlite
 import xlrd
+import urllib.request # used to download a copy of data
+
 
 SQLITE_FILE = "UKRoadData.sqlite"
 # opens sqlite and a database file
@@ -15,6 +16,10 @@ conn = sqlite3.connect(SQLITE_FILE)
 
 # provides a connection to the database
 myCursor = conn.cursor()
+
+
+dataGuideURL = "http://data.dft.gov.uk/road-accidents-safety-data/variable%20lookup.xls"
+urllib.request.urlretrieve(dataGuideURL, 'Road-Accident-Safety-Data-Guide.xls')
 
 # open "Road-Accident-Safety-Data-Guide.xls"
 roadDataXLS = xlrd.open_workbook(filename="Road-Accident-Safety-Data-Guide.xls")
