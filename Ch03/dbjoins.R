@@ -1,6 +1,7 @@
 #!/usr/bin/Rscript
 
 # Copyright Mark Niemann-Ross, 2017
+# updates June 2020
 # Author: Mark Niemann-Ross. mark.niemannross@gmail.com
 # Description: lynda.com, Database Clinic, SQLite, Problem 2
 
@@ -41,7 +42,9 @@ sapply(filestoget,importDataset)
 
 # import the sheets from the excel file
 library(readxl)
-url <- "http://data.dft.gov.uk/road-accidents-safety-data/Road-Accident-Safety-Data-Guide.xls"
+# used to be...url <- "http://data.dft.gov.uk/road-accidents-safety-data/Road-Accident-Safety-Data-Guide.xls"
+# data location changed in 2020
+url <- "http://data.dft.gov.uk/road-accidents-safety-data/variable%20lookup.xls"
 destfile <- "Road_Accident_Safety_Data_Guide.xls"
 download.file(url, destfile)
 
