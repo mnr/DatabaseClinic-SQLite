@@ -1,6 +1,6 @@
 import sqlite3 # provides python with a library for sqlite
-import csv # used to import Cal Enviro Screen csv file
-import urllib.request
+import csv # used to import csv file
+import urllib.request # used to download a copy of data
 
 SQLITE_FILE = "UKRoadData.sqlite"
 
@@ -54,7 +54,6 @@ myCursor.execute(do_this_sqlite) # creates an empty table
 # this next set of commands populates that table
 
 # import the accident data
-
 AccidentsLocation = "https://data.yorkopendata.org/dataset/c0eec478-ef19-4234-826f-8efb9563eda2/resource/aa8bcb3d-3945-4347-adc9-24d8e1d3e05c/download/accidents.csv"
 urllib.request.urlretrieve(AccidentsLocation, 'Accidents_2015.csv')
 
