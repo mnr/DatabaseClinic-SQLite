@@ -1,5 +1,3 @@
-#!/bin/env python2.7
-
 # import the vehicle data
 
 import sqlite3 # provides python with a library for sqlite
