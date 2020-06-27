@@ -3,7 +3,9 @@
 # import the vehicle data
 
 import sqlite3 # provides python with a library for sqlite
-import csv
+import csv # used to import csv file
+import urllib.request # used to download a copy of data
+
 
 SQLITE_FILE = "UKRoadData.sqlite"
 
@@ -11,11 +13,18 @@ conn = sqlite3.connect(SQLITE_FILE) # opens sqlite and a database file
 
 myCursor = conn.cursor() # provides a connection to the database
 
-# first, build the table
+# get a copy of the data
+
+VehiclesLocation = "https://data.yorkopendata.org/dataset/c0eec478-ef19-4234-826f-8efb9563eda2/resource/1eaf47df-be35-4f3a-bab6-b4958b5d9dee/download/vehicles.csv"
+urllib.request.urlretrieve(VehiclesLocation, 'Vehicles_2015.csv')
+
+
+# build the table
 # use csv.reader (an iterator) to get the first line of the csv file
 # (which we assume is column headers)
 reader = csv.reader(open('Vehicles_2015.csv', 'r'), delimiter=',')
-headers = reader.next()
+# headers = reader.next() # old style
+headers = next(reader)
 
 # build the table from the csv headers
 do_this_sqlite_1 = "CREATE TABLE `Vehicles_2015` ( "
