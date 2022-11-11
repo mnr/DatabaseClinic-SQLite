@@ -2,7 +2,7 @@
 
 In this challenge, the instructor will demonstrate how to efficiently search a dataset using their database of choice.
 
-We've been given the [California Population Projections](https://data.ca.gov/dataset/california-population-projection-county-age-gender-and-ethnicity/resource/cd0453ba-a6db-4542#{})
+We've been given the California Population Projections. This used to be available online, but now is available as part of the downloads in this repository.
 
 This is a large dataset, and searching for information will require a lot of work from the computer.
 
